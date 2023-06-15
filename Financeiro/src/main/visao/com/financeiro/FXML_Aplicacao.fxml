@@ -15,35 +15,37 @@
          <children>
             <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="tabPesquisa" text="Login">
+                <Tab fx:id="tabLogin" text="Login">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TextField fx:id="txtUsernamePesquisa" layoutX="198.0" layoutY="192.0" prefHeight="25.0" prefWidth="205.0" />
+                              <TextField fx:id="txtSenhaLogin" layoutX="198.0" layoutY="192.0" prefHeight="25.0" prefWidth="205.0" />
                               <Label layoutX="198.0" layoutY="169.0" text="Senha:" />
-                              <Button fx:id="btnIncluirPesquisa" layoutX="249.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnIncluirPesquisaOnAction" prefHeight="25.0" prefWidth="103.0" text="Login" />
-                              <TextField fx:id="txtUsernamePesquisa1" layoutX="198.0" layoutY="126.0" prefHeight="25.0" prefWidth="205.0" />
-                              <Label layoutX="198.0" layoutY="99.0" text="Login:" />
-                              <Label layoutX="232.0" layoutY="309.0" text="Ainda não sou cadastrado" />
+                              <Button fx:id="btnIncluirPesquisa" layoutX="249.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnIncluirPesquisaOnAction" onMouseClicked="#onClickLogin" prefHeight="25.0" prefWidth="103.0" text="Login" />
+                              <TextField fx:id="txtLoginLogin" layoutX="199.0" layoutY="114.0" prefHeight="25.0" prefWidth="205.0" />
+                              <Label layoutX="199.0" layoutY="91.0" text="Login:" />
+                              <Label fx:id="txtNovoCadastroUsuario" layoutX="232.0" layoutY="309.0" onMouseClicked="#onClickTxtNovoCadastroUsuario" text="Ainda não sou cadastrado" />
+                              <Label fx:id="lblErroLogin" layoutX="199.0" layoutY="139.0" textFill="#fc0000" />
+                              <Label fx:id="lblErroSenha" layoutX="199.0" layoutY="217.0" textFill="#fc0000" />
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab fx:id="tabCadastro" text=" Cadastro Usuário">
+                <Tab fx:id="tabCadastro" disable="true" text=" Cadastro Usuário">
                   <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <TextField fx:id="txtNome" layoutX="198.0" layoutY="85.0" prefHeight="25.0" prefWidth="207.0" />
-                              <TextField fx:id="txtLogin" layoutX="199.0" layoutY="135.0" prefHeight="25.0" prefWidth="206.0" />
+                              <TextField fx:id="txtLoginCadastro" layoutX="199.0" layoutY="135.0" prefHeight="25.0" prefWidth="206.0" />
                               <Label layoutX="145.0" layoutY="89.0" text="Nome:" />
                               <Label layoutX="146.0" layoutY="190.0" text="Senha:" />
-                              <Button fx:id="btnCadastrarUsuario" layoutX="239.0" layoutY="302.0" mnemonicParsing="false" onMouseClicked="#onClickCadastrarUsuario" prefHeight="25.0" prefWidth="124.0" text="Cadastrar Usuário" />
+                              <Button fx:id="btnCadastrarUsuario" layoutX="238.0" layoutY="286.0" mnemonicParsing="false" onMouseClicked="#onClickCadastrarUsuario" prefHeight="25.0" prefWidth="124.0" text="Cadastrar Usuário" />
                               <Label layoutX="254.0" layoutY="23.0" text="Cadastro">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtSenha" layoutX="199.0" layoutY="186.0" prefHeight="25.0" prefWidth="206.0" />
+                              <TextField fx:id="txtSenhaCadastro" layoutX="199.0" layoutY="186.0" prefHeight="25.0" prefWidth="206.0" />
                               <TextField fx:id="txtConfirmarSenha" layoutX="199.0" layoutY="234.0" prefHeight="25.0" prefWidth="206.0" />
                               <Label layoutX="91.0" layoutY="238.0" text="Confirmar senha:" />
                               <Label layoutX="147.0" layoutY="139.0" text="Login:" />
@@ -51,31 +53,32 @@
                               <Label fx:id="lblLogin" layoutX="205.0" layoutY="160.0" textFill="RED" />
                               <Label fx:id="lblSenha" layoutX="204.0" layoutY="211.0" textFill="#f80101" />
                               <Label fx:id="lblConfirmarSenha" layoutX="199.0" layoutY="259.0" textFill="RED" />
+                              <Label fx:id="lblCancelarCadastroUsuario" layoutX="279.0" layoutY="320.0" onMouseClicked="#onClickCancelarCadastroUsuario" text="Cancelar" />
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Tela Inicial">
+                  <Tab fx:id="tabTelaInicial" disable="true" text="Tela Inicial">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
-                  <Tab text="Itens">
+                  <Tab fx:id="tabItens" disable="true" text="Itens">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
-                  <Tab text="Lançamentos">
+                  <Tab fx:id="tabLancamentos" disable="true" text="Lançamentos">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
-                  <Tab text="Gastos">
+                  <Tab fx:id="tabGastos" disable="true" text="Gastos">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
-                  <Tab text="Comparação">
+                  <Tab fx:id="tabComparacao" disable="true" text="Comparação">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>

@@ -18,5 +18,8 @@ public class NegocioUsuario { //validação do usuário
         }
         return usuarioDao.inserir(usuario);
     }
+    public Usuario consultar(String login) throws SQLException {
+        return usuarioDao.consultarPorLogin(login);
+    }
 
 }
