@@ -12,4 +12,7 @@ module com.financeiro {
 
     opens com.financeiro.main to javafx.fxml;
     exports com.financeiro.main;
+
+    opens com.financeiro.modelo to javafx.fxml;
+    exports com.financeiro.modelo;
 }

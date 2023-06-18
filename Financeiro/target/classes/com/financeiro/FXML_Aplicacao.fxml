@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -20,11 +25,11 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <TextField fx:id="txtSenhaLogin" layoutX="198.0" layoutY="192.0" prefHeight="25.0" prefWidth="205.0" />
-                              <Label layoutX="198.0" layoutY="169.0" text="Senha:" />
+                              <Label focusTraversable="false" layoutX="198.0" layoutY="169.0" text="Senha:" />
                               <Button fx:id="btnIncluirPesquisa" layoutX="249.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnIncluirPesquisaOnAction" onMouseClicked="#onClickLogin" prefHeight="25.0" prefWidth="103.0" text="Login" />
                               <TextField fx:id="txtLoginLogin" layoutX="199.0" layoutY="114.0" prefHeight="25.0" prefWidth="205.0" />
-                              <Label layoutX="199.0" layoutY="91.0" text="Login:" />
-                              <Label fx:id="txtNovoCadastroUsuario" layoutX="232.0" layoutY="309.0" onMouseClicked="#onClickTxtNovoCadastroUsuario" text="Ainda não sou cadastrado" />
+                              <Label focusTraversable="false" layoutX="199.0" layoutY="91.0" text="Login:" />
+                              <Label fx:id="txtNovoCadastroUsuario" layoutX="232.0" layoutY="309.0" onMouseClicked="#onClickNovoCadastroUsuario" text="Ainda não sou cadastrado" />
                               <Label fx:id="lblErroLogin" layoutX="199.0" layoutY="139.0" textFill="#fc0000" />
                               <Label fx:id="lblErroSenha" layoutX="199.0" layoutY="217.0" textFill="#fc0000" />
                            </children>
@@ -37,18 +42,18 @@
                            <children>
                               <TextField fx:id="txtNome" layoutX="198.0" layoutY="85.0" prefHeight="25.0" prefWidth="207.0" />
                               <TextField fx:id="txtLoginCadastro" layoutX="199.0" layoutY="135.0" prefHeight="25.0" prefWidth="206.0" />
-                              <Label layoutX="145.0" layoutY="89.0" text="Nome:" />
-                              <Label layoutX="146.0" layoutY="190.0" text="Senha:" />
+                              <Label focusTraversable="false" layoutX="145.0" layoutY="89.0" text="Nome:" />
+                              <Label focusTraversable="false" layoutX="146.0" layoutY="190.0" text="Senha:" />
                               <Button fx:id="btnCadastrarUsuario" layoutX="238.0" layoutY="286.0" mnemonicParsing="false" onMouseClicked="#onClickCadastrarUsuario" prefHeight="25.0" prefWidth="124.0" text="Cadastrar Usuário" />
-                              <Label layoutX="254.0" layoutY="23.0" text="Cadastro">
+                              <Label focusTraversable="false" layoutX="254.0" layoutY="23.0" text="Cadastro">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
                               <TextField fx:id="txtSenhaCadastro" layoutX="199.0" layoutY="186.0" prefHeight="25.0" prefWidth="206.0" />
                               <TextField fx:id="txtConfirmarSenha" layoutX="199.0" layoutY="234.0" prefHeight="25.0" prefWidth="206.0" />
-                              <Label layoutX="91.0" layoutY="238.0" text="Confirmar senha:" />
-                              <Label layoutX="147.0" layoutY="139.0" text="Login:" />
+                              <Label focusTraversable="false" layoutX="91.0" layoutY="238.0" text="Confirmar senha:" />
+                              <Label focusTraversable="false" layoutX="147.0" layoutY="139.0" text="Login:" />
                               <Label fx:id="lblNome" layoutX="199.0" layoutY="110.0" textFill="RED" />
                               <Label fx:id="lblLogin" layoutX="205.0" layoutY="160.0" textFill="RED" />
                               <Label fx:id="lblSenha" layoutX="204.0" layoutY="211.0" textFill="#f80101" />
@@ -65,22 +70,83 @@
                   </Tab>
                   <Tab fx:id="tabItens" disable="true" text="Itens">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label focusTraversable="false" layoutX="156.0" layoutY="38.0" text="Item:" />
+                              <Button fx:id="btnCadastrarItem" layoutX="329.0" layoutY="55.0" mnemonicParsing="false" onMouseClicked="#onClickCadastrarItem" text="Cadastrar" />
+                              <Button fx:id="btnExcluirItem" disable="true" layoutX="406.0" layoutY="55.0" mnemonicParsing="false" onMouseClicked="#onClickExcluirItem" text="Excluir" />
+                              <TextField fx:id="txtDescricaoItem" layoutX="156.0" layoutY="55.0" prefHeight="25.0" prefWidth="156.0" />
+                              <Button fx:id="btnPesquisarItem" layoutX="351.0" layoutY="118.0" mnemonicParsing="false" onMouseClicked="#OnclickPesquisarItem" text="Pesquisar item" />
+                              <TableView fx:id="tabelaItens" focusTraversable="false" layoutX="156.0" layoutY="158.0" prefHeight="183.0" prefWidth="289.0">
+                                <columns>
+                                  <TableColumn fx:id="tableColumnItem" prefWidth="287.0" text="Item" />
+                                </columns>
+                              </TableView>
+                              <TextField fx:id="txtPesquisaItem" layoutX="156.0" layoutY="118.0" prefHeight="25.0" prefWidth="173.0" />
+                              <Separator focusTraversable="false" layoutX="7.0" layoutY="104.0" prefHeight="3.0" prefWidth="608.0" />
+                              <Label fx:id="lblErroDescricaoItem" focusTraversable="false" layoutX="129.0" layoutY="80.0" textFill="#fc0202" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                   <Tab fx:id="tabLancamentos" disable="true" text="Lançamentos">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="txtValorLancamento" layoutX="222.0" layoutY="148.0" prefHeight="25.0" prefWidth="156.0" />
+                              <Label focusTraversable="false" layoutX="180.0" layoutY="54.0" text="Item:" />
+                              <Label focusTraversable="false" layoutX="181.0" layoutY="101.0" text="Tipo:" />
+                              <Label focusTraversable="false" layoutX="178.0" layoutY="152.0" text="Valor:" />
+                              <Label focusTraversable="false" layoutX="180.0" layoutY="203.0" text="Data:" />
+                              <Label focusTraversable="false" layoutX="142.0" layoutY="252.0" text="Recorrência:" />
+                              <Button fx:id="btnCadastrarLancamento" layoutX="267.0" layoutY="298.0" mnemonicParsing="false" onMouseClicked="#onClickCadastrarLancamento" text="Cadastrar" />
+                              <DatePicker fx:id="pickerDataLancamento" layoutX="222.0" layoutY="199.0" prefHeight="25.0" prefWidth="160.0" />
+                              <ComboBox fx:id="cmbItemLancamento" layoutX="222.0" layoutY="50.0" prefHeight="25.0" prefWidth="156.0" />
+                              <ComboBox fx:id="cmbTipoLancamento" layoutX="222.0" layoutY="97.0" prefHeight="25.0" prefWidth="156.0" />
+                              <ComboBox fx:id="cmbRecorrenciaLancamento" layoutX="222.0" layoutY="248.0" prefHeight="25.0" prefWidth="156.0" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                   <Tab fx:id="tabGastos" disable="true" text="Gastos">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="607.0">
+                           <children>
+                              <TableView fx:id="tabelaGastos" focusTraversable="false" layoutX="3.0" layoutY="83.0" prefHeight="293.0" prefWidth="606.0">
+                                 <columns>
+                                    <TableColumn fx:id="tableColumnGastosItem" prefWidth="102.0" text="Item" />
+                                    <TableColumn fx:id="tableColumnGastosTipo" prefWidth="127.0" text="Tipo" />
+                                    <TableColumn fx:id="tableColunmGastosData" prefWidth="124.0" text="Data" />
+                                    <TableColumn fx:id="tableColumnGastosRecorrencia" prefWidth="138.0" text="Recorrência" />
+                                    <TableColumn fx:id="tableColumnGastosValor" prefWidth="102.0" text="Valor" />
+                                 </columns>
+                              </TableView>
+                              <Label focusTraversable="false" layoutX="30.0" layoutY="31.0" text="Data início:" />
+                              <Label focusTraversable="false" layoutX="258.0" layoutY="31.0" text="Data fim:" />
+                              <Button fx:id="btnConsultarGastos" layoutX="471.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#OnclickConsultarGastos" text="Consultar gastos" />
+                              <DatePicker fx:id="pickerDataInicioGastos" layoutX="98.0" layoutY="27.0" prefHeight="25.0" prefWidth="135.0" />
+                              <DatePicker fx:id="pickerDataFimGastos" layoutX="314.0" layoutY="27.0" prefHeight="25.0" prefWidth="135.0" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                   <Tab fx:id="tabComparacao" disable="true" text="Comparação">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tabelaComparacao" focusTraversable="false" layoutX="68.0" layoutY="98.0" prefHeight="274.0" prefWidth="490.0">
+                                 <columns>
+                                    <TableColumn fx:id="tableColumnComparacaoItem" prefWidth="130.0" text="Item" />
+                                    <TableColumn fx:id="tableColumnComparacaoMes1" prefWidth="118.0" text="Mês 1" />
+                                    <TableColumn fx:id="tableColumnComparacaoMes2" minWidth="0.0" prefWidth="109.0" text="Mês 2" />
+                                    <TableColumn fx:id="tableColumnDiferenca" prefWidth="132.0" text="Diferença" />
+                                 </columns>
+                              </TableView>
+                              <TextField fx:id="txtAnoComparacao" layoutX="337.0" layoutY="40.0" prefHeight="25.0" prefWidth="102.0" />
+                              <Button fx:id="btnConsultarComparacao" layoutX="464.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#onClickComparar" prefHeight="25.0" prefWidth="94.0" text="Comparar" />
+                              <Label layoutX="68.0" layoutY="23.0" text="Mês 1:" />
+                              <Label layoutX="203.0" layoutY="23.0" text="Mês 2" />
+                              <Label layoutX="337.0" layoutY="23.0" text="Ano:" />
+                              <ComboBox fx:id="cmbMes1Comparacao" layoutX="68.0" layoutY="40.0" prefHeight="25.0" prefWidth="107.0" />
+                              <ComboBox fx:id="cmbMes2Comparacao" layoutX="203.0" layoutY="40.0" prefHeight="25.0" prefWidth="104.0" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
               </tabs>

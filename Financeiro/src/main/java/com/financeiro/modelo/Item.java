@@ -1,9 +1,17 @@
 package com.financeiro.modelo;
 public class Item {
-    private int codigo;
+
+    private Usuario usuario;
+    private Integer codigo;
     private String descricao;
 
-    public int getCodigo() {
+    public String toString(){
+        return descricao;
+    }
+
+    public Usuario getUsuario(){ return usuario; }
+
+    public Integer getCodigo() {
         return codigo;
     }
 
@@ -11,7 +19,9 @@ public class Item {
         return descricao;
     }
 
-    public void setCodigo(int codigo) {
+    public void setUsuario(Usuario usuario) {this.usuario = usuario; }
+
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

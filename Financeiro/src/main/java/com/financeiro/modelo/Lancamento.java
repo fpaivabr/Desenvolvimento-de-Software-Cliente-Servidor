@@ -5,15 +5,19 @@ import com.financeiro.modelo.enumeradores.TipoRecorrencia;
 
 import java.time.LocalDate;
 public class Lancamento {
+
+    private Usuario usuario;
+    private int idLancamento;
     private TipoLancamento tipoLancamento;
     private double valor;
     private LocalDate dataLancamento;
     private TipoRecorrencia tipoRecorrencia;
     private Item item;
 
-    public TipoLancamento getTipoLancamento() {
-        return tipoLancamento;
-    }
+    public Usuario getUsuario() { return usuario; }
+
+    public int getIdLancamento() { return idLancamento; }
+    public TipoLancamento getTipoLancamento() { return tipoLancamento; }
 
     public double getValor() {
         return valor;
@@ -30,6 +34,10 @@ public class Lancamento {
     public Item getItem() {
         return item;
     }
+
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+
+    public void setIdLancamento(int idLancamento) { this.idLancamento = idLancamento; }
 
     public void setTipoLancamento(TipoLancamento tipoLancamento) {
         this.tipoLancamento = tipoLancamento;
@@ -50,4 +58,5 @@ public class Lancamento {
     public void setItem(Item item) {
         this.item = item;
     }
+
 }
