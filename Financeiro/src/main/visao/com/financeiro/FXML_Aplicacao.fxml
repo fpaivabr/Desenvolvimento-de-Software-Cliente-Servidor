@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -24,7 +25,6 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TextField fx:id="txtSenhaLogin" layoutX="198.0" layoutY="192.0" prefHeight="25.0" prefWidth="205.0" />
                               <Label focusTraversable="false" layoutX="198.0" layoutY="169.0" text="Senha:" />
                               <Button fx:id="btnIncluirPesquisa" layoutX="249.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnIncluirPesquisaOnAction" onMouseClicked="#onClickLogin" prefHeight="25.0" prefWidth="103.0" text="Login" />
                               <TextField fx:id="txtLoginLogin" layoutX="199.0" layoutY="114.0" prefHeight="25.0" prefWidth="205.0" />
@@ -32,6 +32,7 @@
                               <Label fx:id="txtNovoCadastroUsuario" layoutX="232.0" layoutY="309.0" onMouseClicked="#onClickNovoCadastroUsuario" text="Ainda não sou cadastrado" />
                               <Label fx:id="lblErroLogin" layoutX="199.0" layoutY="139.0" textFill="#fc0000" />
                               <Label fx:id="lblErroSenha" layoutX="199.0" layoutY="217.0" textFill="#fc0000" />
+                              <PasswordField fx:id="txtSenhaLogin" layoutX="199.0" layoutY="192.0" prefHeight="25.0" prefWidth="205.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -50,8 +51,6 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtSenhaCadastro" layoutX="199.0" layoutY="186.0" prefHeight="25.0" prefWidth="206.0" />
-                              <TextField fx:id="txtConfirmarSenha" layoutX="199.0" layoutY="234.0" prefHeight="25.0" prefWidth="206.0" />
                               <Label focusTraversable="false" layoutX="91.0" layoutY="238.0" text="Confirmar senha:" />
                               <Label focusTraversable="false" layoutX="147.0" layoutY="139.0" text="Login:" />
                               <Label fx:id="lblNome" layoutX="199.0" layoutY="110.0" textFill="RED" />
@@ -59,13 +58,58 @@
                               <Label fx:id="lblSenha" layoutX="204.0" layoutY="211.0" textFill="#f80101" />
                               <Label fx:id="lblConfirmarSenha" layoutX="199.0" layoutY="259.0" textFill="RED" />
                               <Label fx:id="lblCancelarCadastroUsuario" layoutX="279.0" layoutY="320.0" onMouseClicked="#onClickCancelarCadastroUsuario" text="Cancelar" />
+                              <PasswordField fx:id="txtSenhaCadastro" layoutX="198.0" layoutY="186.0" prefHeight="25.0" prefWidth="208.0" />
+                              <PasswordField fx:id="txtConfirmarSenha" layoutX="198.0" layoutY="234.0" prefHeight="25.0" prefWidth="208.0" />
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
                   <Tab fx:id="tabTelaInicial" disable="true" text="Tela Inicial">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane disable="true" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="lblOla" focusTraversable="false" layoutX="41.0" layoutY="36.0" text="Olá, ">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblColocarNomeUsuario" focusTraversable="false" layoutX="93.0" layoutY="36.0">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="279.0" layoutY="151.0" text="Receita do mês:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="270.0" layoutY="192.0" text="Despesa do mês:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="292.0" layoutY="233.0" text="Saldo do mês:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblApresentarReceita" layoutX="421.0" layoutY="151.0" onMouseClicked="#onClickApresentarReceita" text="*****">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblApresentarDespesa" layoutX="421.0" layoutY="192.0" onMouseClicked="#onClickApresentarDespesa" text="*****">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblApresentarSaldo" layoutX="421.0" layoutY="233.0" onMouseClicked="#onClickApresentarSaldo" text="*****">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="507.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#onClickLogOut" text="Log out" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                   <Tab fx:id="tabItens" disable="true" text="Itens">
@@ -84,7 +128,8 @@
                               </TableView>
                               <TextField fx:id="txtPesquisaItem" layoutX="156.0" layoutY="118.0" prefHeight="25.0" prefWidth="173.0" />
                               <Separator focusTraversable="false" layoutX="7.0" layoutY="104.0" prefHeight="3.0" prefWidth="608.0" />
-                              <Label fx:id="lblErroDescricaoItem" focusTraversable="false" layoutX="129.0" layoutY="80.0" textFill="#fc0202" />
+                              <Label fx:id="lblErroItemCadastro" focusTraversable="false" layoutX="156.0" layoutY="80.0" textFill="RED" />
+                              <Label fx:id="lblErroItemPesquisa" focusTraversable="false" layoutX="156.0" layoutY="143.0" textFill="RED" />
                            </children></AnchorPane>
                     </content>
                   </Tab>
@@ -103,6 +148,11 @@
                               <ComboBox fx:id="cmbItemLancamento" layoutX="222.0" layoutY="50.0" prefHeight="25.0" prefWidth="156.0" />
                               <ComboBox fx:id="cmbTipoLancamento" layoutX="222.0" layoutY="97.0" prefHeight="25.0" prefWidth="156.0" />
                               <ComboBox fx:id="cmbRecorrenciaLancamento" layoutX="222.0" layoutY="248.0" prefHeight="25.0" prefWidth="156.0" />
+                              <Label fx:id="lblErroItemLancamento" focusTraversable="false" layoutX="222.0" layoutY="75.0" textFill="RED" />
+                              <Label fx:id="lblErroTipoLancamento" focusTraversable="false" layoutX="222.0" layoutY="122.0" textFill="RED" />
+                              <Label fx:id="lblErroValorLancamento" focusTraversable="false" layoutX="222.0" layoutY="173.0" textFill="RED" />
+                              <Label fx:id="lblErroDataLancamento" focusTraversable="false" layoutX="222.0" layoutY="224.0" textFill="RED" />
+                              <Label fx:id="lblErroRecorrenciaLancamento" focusTraversable="false" layoutX="222.0" layoutY="273.0" textFill="RED" />
                            </children></AnchorPane>
                     </content>
                   </Tab>
@@ -110,7 +160,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="607.0">
                            <children>
-                              <TableView fx:id="tabelaGastos" focusTraversable="false" layoutX="3.0" layoutY="83.0" prefHeight="293.0" prefWidth="606.0">
+                              <TableView fx:id="tabelaGastos" focusTraversable="false" layoutX="3.0" layoutY="83.0" prefHeight="248.0" prefWidth="606.0">
                                  <columns>
                                     <TableColumn fx:id="tableColumnGastosItem" prefWidth="102.0" text="Item" />
                                     <TableColumn fx:id="tableColumnGastosTipo" prefWidth="127.0" text="Tipo" />
@@ -124,6 +174,9 @@
                               <Button fx:id="btnConsultarGastos" layoutX="471.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#OnclickConsultarGastos" text="Consultar gastos" />
                               <DatePicker fx:id="pickerDataInicioGastos" layoutX="98.0" layoutY="27.0" prefHeight="25.0" prefWidth="135.0" />
                               <DatePicker fx:id="pickerDataFimGastos" layoutX="314.0" layoutY="27.0" prefHeight="25.0" prefWidth="135.0" />
+                              <Label fx:id="lblErroDataInicio" focusTraversable="false" layoutX="98.0" layoutY="52.0" textFill="RED" />
+                              <Label fx:id="lblErroDataFim" focusTraversable="false" layoutX="314.0" layoutY="52.0" textFill="RED" />
+                              <Button fx:id="btnExcluirLancamento" layoutX="470.0" layoutY="338.0" mnemonicParsing="false" onMouseClicked="#onClickExcluirLancamento" prefHeight="25.0" prefWidth="123.0" text="Excluir lançamento" />
                            </children></AnchorPane>
                     </content>
                   </Tab>
@@ -146,6 +199,9 @@
                               <Label layoutX="337.0" layoutY="23.0" text="Ano:" />
                               <ComboBox fx:id="cmbMes1Comparacao" layoutX="68.0" layoutY="40.0" prefHeight="25.0" prefWidth="107.0" />
                               <ComboBox fx:id="cmbMes2Comparacao" layoutX="203.0" layoutY="40.0" prefHeight="25.0" prefWidth="104.0" />
+                              <Label fx:id="lblErroMes1" layoutX="68.0" layoutY="65.0" textFill="#fc0000" />
+                              <Label fx:id="lblErroMes2" layoutX="202.0" layoutY="65.0" textFill="#fc0000" />
+                              <Label fx:id="lblErroAno" layoutX="337.0" layoutY="65.0" textFill="#fc0000" />
                            </children></AnchorPane>
                     </content>
                   </Tab>

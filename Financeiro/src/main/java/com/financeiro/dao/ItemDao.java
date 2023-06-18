@@ -90,12 +90,20 @@ public class ItemDao {
         return item;
     }
 
-    public List<Item> listarItens(int idUsuario) throws SQLException {
-        String sql = "SELECT * FROM Item WHERE id_usuario = ?";
+    public List<Item> listarItens(int idUsuario, String descricao) throws SQLException {
+        String sql = "SELECT * FROM Item WHERE id_usuario = ? ";
+        if(descricao!=null && !descricao.isEmpty()){
+            sql += " AND UPPER(descricao_item) LIKE UPPER(?)";
+        }
+
         List<Item> itens = new ArrayList<>();
         try (Connection connection = Conexao.getConnection()){
              PreparedStatement stmt = connection.prepareStatement(sql);
              stmt.setInt(1, idUsuario);
+
+            if(descricao!=null && !descricao.isEmpty()){
+                stmt.setString(2, descricao);
+            }
 
              try (ResultSet resultSet = stmt.executeQuery()) {
 
@@ -107,6 +115,7 @@ public class ItemDao {
         }
         return itens;
     }
+
 
     public Item getItem(ResultSet resultSet, int codigoItem) throws SQLException {
 

@@ -34,7 +34,7 @@ public class NegocioItem {
         }
         itemDao.excluir(item);
     }
-    public List<Item> consultarLista(int idUsuario) throws SQLException {
-        return itemDao.listarItens(idUsuario);
+    public List<Item> consultarLista(int idUsuario, String descricao) throws SQLException {
+        return itemDao.listarItens(idUsuario, descricao);
     }
 }

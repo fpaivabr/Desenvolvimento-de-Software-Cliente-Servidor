@@ -27,7 +27,7 @@ public class Lancamento {
         return dataLancamento;
     }
 
-    public TipoRecorrencia getTipoRecorrenciarecorrencia() {
+    public TipoRecorrencia getTipoRecorrencia() {
         return tipoRecorrencia;
     }
 

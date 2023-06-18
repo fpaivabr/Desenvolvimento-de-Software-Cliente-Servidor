@@ -4,6 +4,7 @@ import com.financeiro.conexao.Conexao;
 import com.financeiro.modelo.Item;
 import com.financeiro.modelo.Lancamento;
 import com.financeiro.modelo.Usuario;
+import com.financeiro.modelo.enumeradores.Mes;
 import com.financeiro.modelo.enumeradores.TipoLancamento;
 import com.financeiro.modelo.enumeradores.TipoRecorrencia;
 
@@ -23,13 +24,14 @@ public class LancamentoDao {
             stmt.setString(1, lancamento.getTipoLancamento().toString());
             stmt.setDouble(2, lancamento.getValor());
             stmt.setDate(3, Date.valueOf(lancamento.getDataLancamento()));
-            stmt.setString(4, lancamento.getTipoRecorrenciarecorrencia().toString());
+            stmt.setString(4, lancamento.getTipoRecorrencia().toString());
             stmt.setInt(5, lancamento.getItem().getCodigo());
+            stmt.setInt(6, lancamento.getUsuario().getId());
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    lancamento.setIdLancamento(generatedKeys.getInt("id_lancamento"));
+                    lancamento.setIdLancamento(generatedKeys.getInt(1));
                 }
             }
         }
@@ -45,7 +47,7 @@ public class LancamentoDao {
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setDouble(1, lancamento.getValor());
             stmt.setDate(2, Date.valueOf(lancamento.getDataLancamento()));
-            stmt.setString(3, lancamento.getTipoRecorrenciarecorrencia().toString());
+            stmt.setString(3, lancamento.getTipoRecorrencia().toString());
             stmt.setInt(4, lancamento.getIdLancamento());
 
             stmt.executeUpdate();
@@ -65,11 +67,13 @@ public class LancamentoDao {
 
     //CONSULTAR
     public Lancamento consultar(int idLancamento) throws SQLException {
-        String sql = "SELECT * FROM Lancamento WHERE id_lancamento = ?";
+        String sql = "SELECT L.*, I.descricao_item "+
+                     " FROM Lancamento L inner join Item I on I.codigo_item = L.codigo_item"+
+                     " WHERE L.id_lancamento = ?";
         Lancamento lancamento = null;
         try (Connection connection = Conexao.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, lancamento.getIdLancamento());
+            stmt.setInt(1, idLancamento);
 
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -82,13 +86,37 @@ public class LancamentoDao {
     }
 
     public List<Lancamento> listarLancamentos(int idUsuario, LocalDate dataInicio, LocalDate dataFim) throws SQLException {
-        String sql = "SELECT * FROM Lancamento WHERE id_usuario = ? AND data_lancamento BETWEEN ? AND ?";
+        String sql = "SELECT L.*, I.descricao_item FROM Lancamento L inner join Item I on I.codigo_item = L.codigo_item"+
+                " WHERE L.id_usuario = ? AND data_lancamento BETWEEN ? AND ?";
         List<Lancamento> lancamentos = new ArrayList<>();
         try (Connection connection = Conexao.getConnection()){
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, idUsuario);
             stmt.setDate(2, Date.valueOf(dataInicio));
             stmt.setDate(3, Date.valueOf(dataFim));
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+
+                while (resultSet.next()) {
+                    Lancamento lancamento = getLancamento(resultSet);
+                    lancamentos.add(lancamento);
+                }
+            }
+        }
+        return lancamentos;
+    }
+
+
+    public List<Lancamento> consultarLancamentosMes (int idUsuario, Integer ano, Mes mes) throws SQLException {
+        String sql = "SELECT L.*, I.descricao_item FROM Lancamento L "+
+                "inner join Item I on I.codigo_item = L.codigo_item"+
+                " WHERE L.id_usuario = ? AND year(data_lancamento) = ? and month(data_lancamento) = ?";
+        List<Lancamento> lancamentos = new ArrayList<>();
+        try (Connection connection = Conexao.getConnection()){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idUsuario);
+            stmt.setInt(2, ano);
+            stmt.setInt(3, mes.ordinal()+ 1);
 
             try (ResultSet resultSet = stmt.executeQuery()) {
 
@@ -111,6 +139,8 @@ public class LancamentoDao {
 
         Item item = new Item();
         item.setCodigo(resultSet.getInt("codigo_item"));
+        item.setDescricao(resultSet.getString("descricao_item"));
+
         lancamento.setItem(item);
 
         Usuario usuario = new Usuario();
@@ -119,8 +149,4 @@ public class LancamentoDao {
 
         return lancamento;
     }
-
 }
-
-
-
