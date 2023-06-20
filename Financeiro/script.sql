@@ -1,3 +1,7 @@
+-- MySql
+-- Usuário: bancomvc
+-- Senha: 12345678
+
 DROP TABLE IF EXISTS Lancamento;
 DROP TABLE IF EXISTS Item;
 DROP TABLE IF EXISTS Usuario;

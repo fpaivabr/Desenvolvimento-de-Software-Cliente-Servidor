@@ -108,7 +108,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="btnLogOut" layoutX="509.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#onClickLogOut" text="Log out" />
+                              <Button fx:id="btnLogOut" layoutX="491.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#onClickLogOut" text="Log out" />
                               <ComboBox fx:id="cmbIdioma" layoutX="32.0" layoutY="317.0" onAction="#onIdiomaSelecionado" prefHeight="25.0" prefWidth="117.0" />
                               <Label fx:id="lblAlterarIdioma" layoutX="35.0" layoutY="293.0" text="Alterar idioma:" />
                            </children></AnchorPane>

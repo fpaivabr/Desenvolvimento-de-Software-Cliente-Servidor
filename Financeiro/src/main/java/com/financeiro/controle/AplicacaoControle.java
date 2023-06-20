@@ -349,6 +349,8 @@ public class AplicacaoControle {
 
         txtLoginLogin.setText("");
         txtSenhaLogin.setText("");
+        lblErroLogin.setText("");
+        lblErroSenha.setText("");
 
         lblApresentarSaldo.setText("*****");
         lblApresentarDespesa.setText("*****");
@@ -382,7 +384,10 @@ public class AplicacaoControle {
     }
 
     private void prepararTelaComparacao() {
+        cmbMes1Comparacao.getItems().clear();;
         cmbMes1Comparacao.getItems().addAll(Mes.values());
+
+        cmbMes2Comparacao.getItems().clear();
         cmbMes2Comparacao.getItems().addAll(Mes.values());
         //txt Field Ano Comparação
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -415,7 +420,9 @@ public class AplicacaoControle {
     }
 
     private void prepararTelaLancamentos() throws SQLException {
+        cmbTipoLancamento.getItems().clear();
         cmbTipoLancamento.getItems().addAll(TipoLancamento.values()); // TIPO LANÇAMENTO
+        cmbRecorrenciaLancamento.getItems().clear();
         cmbRecorrenciaLancamento.getItems().addAll(TipoRecorrencia.values()); // TIPO RECORRÊNCIA
 
         NegocioItem negocioItem = new NegocioItem(); // ITEM LANÇAMENTO
@@ -813,22 +820,29 @@ public class AplicacaoControle {
     }
 
     void apresentarDadosTelaInicial() throws SQLException {
-        DecimalFormat df = new DecimalFormat("#,##0.00");
-        df.setDecimalFormatSymbols(new DecimalFormatSymbols(new Locale("pt", "BR")));
+        if(lblApresentarReceita.getText().equals("*****")) {
+            DecimalFormat df = new DecimalFormat("#,##0.00");
+            df.setDecimalFormatSymbols(new DecimalFormatSymbols(new Locale("pt", "BR")));
 
-        NegocioLancamento negocioLancamento= new NegocioLancamento();
-        LocalDate hoje = LocalDate.now();
-        LocalDate inicioMes = LocalDate.of(hoje.getYear(), hoje.getMonth(),1);
-        List<Lancamento> listaLancamento = negocioLancamento
-                .consultarLista(usuarioLogado.getId(), inicioMes, hoje);
-        Double receita = listaLancamento.stream().filter(lancamento -> lancamento.getTipoLancamento()
-                .equals(TipoLancamento.Receita)).mapToDouble(lancamento -> lancamento.getValor()).sum();
-        lblApresentarReceita.setText(df.format(receita));
-        Double despesa = listaLancamento.stream().filter(lancamento -> lancamento.getTipoLancamento()
-                .equals(TipoLancamento.Despesa)).mapToDouble(lancamento -> lancamento.getValor()).sum();
-        lblApresentarDespesa.setText(df.format(despesa));
-        Double saldo = receita - despesa;
-        lblApresentarSaldo.setText(df.format(saldo));
+            NegocioLancamento negocioLancamento = new NegocioLancamento();
+            LocalDate hoje = LocalDate.now();
+            LocalDate inicioMes = LocalDate.of(hoje.getYear(), hoje.getMonth(), 1);
+            List<Lancamento> listaLancamento = negocioLancamento
+                    .consultarLista(usuarioLogado.getId(), inicioMes, hoje);
+            Double receita = listaLancamento.stream().filter(lancamento -> lancamento.getTipoLancamento()
+                    .equals(TipoLancamento.Receita)).mapToDouble(lancamento -> lancamento.getValor()).sum();
+            lblApresentarReceita.setText(df.format(receita));
+            Double despesa = listaLancamento.stream().filter(lancamento -> lancamento.getTipoLancamento()
+                    .equals(TipoLancamento.Despesa)).mapToDouble(lancamento -> lancamento.getValor()).sum();
+            lblApresentarDespesa.setText(df.format(despesa));
+            Double saldo = receita - despesa;
+            lblApresentarSaldo.setText(df.format(saldo));
+        }else{
+            lblApresentarDespesa.setText("*****");
+            lblApresentarReceita.setText("*****");
+            lblApresentarSaldo.setText("*****");
+
+        }
 
     }
 

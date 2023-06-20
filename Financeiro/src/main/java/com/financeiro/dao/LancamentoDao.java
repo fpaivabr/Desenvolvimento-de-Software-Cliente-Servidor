@@ -106,6 +106,27 @@ public class LancamentoDao {
         return lancamentos;
     }
 
+//    public List<Lancamento> listarLancamentos(int idUsuario, LocalDate dataInicio, LocalDate dataFim) throws SQLException {
+//        List<Lancamento> lancamentos = new ArrayList<>();
+//        try (Connection connection = Conexao.getConnection()){
+//            CallableStatement statement = connection
+//                    .prepareCall("{ CALL ConsultarLancamentosPorIntervalo(?, ?, ?) }");
+//            // Defina os parâmetros da procedure
+//            statement.setDate(1, java.sql.Date.valueOf(dataInicio));
+//            statement.setDate(2, java.sql.Date.valueOf(dataFim));
+//            statement.setInt(3, 1); // ID do usuário
+//
+//            try (ResultSet resultSet = statement.executeQuery()) {
+//
+//                while (resultSet.next()) {
+//                    Lancamento lancamento = getLancamento(resultSet);
+//                    lancamentos.add(lancamento);
+//                }
+//            }
+//        }
+//        return lancamentos;
+//    }
+
 
     public List<Lancamento> consultarLancamentosMes (int idUsuario, Integer ano, Mes mes) throws SQLException {
         String sql = "SELECT L.*, I.descricao_item FROM Lancamento L "+
