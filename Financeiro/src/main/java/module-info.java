@@ -6,6 +6,7 @@ module com.financeiro {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires jasperreports;
 
     opens com.financeiro.controle to javafx.fxml;
     exports com.financeiro.controle;
@@ -18,4 +19,6 @@ module com.financeiro {
 
     exports com.financeiro.util;
     opens com.financeiro.util to javafx.fxml;
+    exports com.financeiro.modelo.enumeradores;
+    opens com.financeiro.modelo.enumeradores to javafx.fxml;
 }

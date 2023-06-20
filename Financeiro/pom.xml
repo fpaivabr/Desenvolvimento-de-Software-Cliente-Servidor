@@ -58,6 +58,13 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.20.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -87,6 +94,7 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <addClasspath>true</addClasspath> <!-- Adicione esta linha -->
                         </configuration>
                     </execution>
                 </executions>

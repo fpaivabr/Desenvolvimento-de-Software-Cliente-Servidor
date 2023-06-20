@@ -1,11 +1,13 @@
 package com.financeiro.controle;
 
+import com.financeiro.modelo.enumeradores.Idiomas;
 import com.financeiro.modelo.enumeradores.Mes;
 import com.financeiro.modelo.enumeradores.TipoLancamento;
 import com.financeiro.modelo.enumeradores.TipoRecorrencia;
 import com.financeiro.negocio.NegocioItem;
 import com.financeiro.negocio.NegocioLancamento;
 import com.financeiro.util.ComparacaoLancamentos;
+import com.financeiro.util.LancamentoDataSource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,13 +21,20 @@ import com.financeiro.modelo.Usuario;
 import com.financeiro.modelo.Item;
 import com.financeiro.modelo.Lancamento;
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
+
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 public class AplicacaoControle {
 
@@ -269,6 +278,22 @@ public class AplicacaoControle {
     @FXML
     private Button btnExcluirLancamento;
 
+    @FXML
+    private ComboBox<Idiomas> cmbIdioma;
+
+    @FXML
+    private Label lblDespesaMes;
+    @FXML
+    private Label lblReceitaMes;
+    @FXML
+    private Label lblSaldoMes;
+
+    @FXML
+    private Label lblAlterarIdioma;
+
+    @FXML
+    private Button btnLogOut;
+
 
 //********************
 // Métodos: Tela Login
@@ -303,7 +328,11 @@ public class AplicacaoControle {
         this.tabComparacao.setDisable(false);
         lblColocarNomeUsuario.setText(usuarioLogado.getNome());
         this.tabPane.getSelectionModel().select(this.tabTelaInicial);// SELECIONA QUAL A TELA ATUAL
+        cmbIdioma.getItems().clear();
+        cmbIdioma.getItems().addAll(Idiomas.values());
+        cmbIdioma.setValue(cmbIdioma.getItems().get(0));//Seleciona Português como Primeiro
         this.prepararTelasTab();
+
 
     }
 
@@ -324,6 +353,7 @@ public class AplicacaoControle {
         lblApresentarSaldo.setText("*****");
         lblApresentarDespesa.setText("*****");
         lblApresentarReceita.setText("*****");
+
     }
 
 
@@ -619,10 +649,9 @@ public class AplicacaoControle {
         txtValorLancamento.setText("");
     }
 
-
-//*********************
-// Métodos: Tela Gastos
-//*********************
+//********************************************
+// Métodos: Tela Transações (Gastos renomeada)
+//********************************************
 
     @FXML
     void OnclickConsultarGastos(MouseEvent event) throws SQLException {
@@ -632,19 +661,8 @@ public class AplicacaoControle {
         tableColumnGastosRecorrencia.setCellValueFactory(new PropertyValueFactory<Lancamento, TipoRecorrencia>("tipoRecorrencia"));
         tableColumnGastosValor.setCellValueFactory(new PropertyValueFactory<Lancamento, Double>("valor"));
 
-        NegocioLancamento negocioLancamento = new NegocioLancamento();
-        LocalDate dataInicio = pickerDataInicioGastos.getValue();
-        LocalDate dataFim = pickerDataFimGastos.getValue();
-        if(dataInicio==null){
-            lblErroDataInicio.setText("Selecione data");
-            return;
-        }
-        if(dataFim==null){
-            lblErroDataInicio.setText("Selecione data");
-            return;
-        }
-
-        List<Lancamento> lancamentos = negocioLancamento.consultarLista(usuarioLogado.getId(),dataInicio, dataFim);
+        List<Lancamento> lancamentos = getLancamentos();
+        if (lancamentos == null) return;
         ObservableList<Lancamento> listaTabelaGastos = FXCollections.observableArrayList(lancamentos);
         tabelaGastos.setItems(listaTabelaGastos);
 
@@ -668,6 +686,75 @@ public class AplicacaoControle {
         tabelaGastos.getSelectionModel().clearSelection();
     }
 
+// Extraido método para ser reutilizado
+    private List<Lancamento> getLancamentos() throws SQLException {
+        lblErroDataInicio.setText("");
+        lblErroDataInicio.setText("");
+        NegocioLancamento negocioLancamento = new NegocioLancamento();
+        LocalDate dataInicio = pickerDataInicioGastos.getValue();
+        LocalDate dataFim = pickerDataFimGastos.getValue();
+        if(dataInicio==null){
+            lblErroDataInicio.setText("Selecione data");
+            return null;
+        }
+        if(dataFim==null){
+            lblErroDataInicio.setText("Selecione data");
+            return null;
+        }
+
+        List<Lancamento> lancamentos = negocioLancamento.consultarLista(usuarioLogado.getId(),dataInicio, dataFim);
+        return lancamentos;
+    }
+
+//*********************************
+// Métodos: Tela Gastos - Relatório
+//*********************************
+
+    @FXML
+    void onClickEmitirRelatorio(MouseEvent event) throws JRException, SQLException {
+        baixarRelatorio();
+    }
+    private void baixarRelatorio() throws JRException, SQLException {
+        List<Lancamento> lancamentos = getLancamentos();
+        if(lancamentos == null){
+            return;
+        }
+
+        LocalDate dataInicio = pickerDataInicioGastos.getValue();
+        LocalDate dataFim = pickerDataFimGastos.getValue();
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("dataInicio", formatarData(dataInicio));
+        parametros.put("dataFim", formatarData(dataFim));
+
+        List<Map<String, Object>> mapas = lancamentos.stream()
+                .map(lancamento -> convertToMap(lancamento))
+                .collect(Collectors.toList());
+
+        JRDataSource dataSource = new LancamentoDataSource(mapas);
+        JasperPrint jp = JasperFillManager.fillReport(
+                "src\\main\\java\\com\\financeiro\\relatorios\\RelatorioFinanceiro.jasper",
+                parametros,
+                dataSource);
+
+        JasperViewer.viewReport(jp, false);
+    }
+
+    public String formatarData(LocalDate data){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return data.format(formatter);
+    }
+
+    private Map<String, Object> convertToMap(Lancamento lancamento) {
+        Map<String, Object> mapa = new HashMap<>();
+        mapa.put("usuario", lancamento.getUsuario());
+        mapa.put("idLancamento", lancamento.getIdLancamento());
+        mapa.put("tipoLancamento", lancamento.getTipoLancamento().toString());
+        mapa.put("valor", lancamento.getValor());
+        mapa.put("dataLancamento", formatarData(lancamento.getDataLancamento()));
+        mapa.put("tipoRecorrencia", lancamento.getTipoRecorrencia().toString());
+        mapa.put("item", lancamento.getItem().getDescricao());
+        return mapa;
+    }
 
 //*************************
 // Métodos: Tela Comparação
@@ -752,6 +839,101 @@ public class AplicacaoControle {
         voltarTelaLogin();
     }
 
+    @FXML
+    void onIdiomaSelecionado(ActionEvent event) {
+        Idiomas idiomaSelecionado = cmbIdioma.getSelectionModel().getSelectedItem();
+        if(idiomaSelecionado!=null){
+            switch (idiomaSelecionado){
+                case Portugues -> selecionarPortugues();
+                case English -> selecionarIngles();
+                case Espanol -> selecionarEspanhol();
+                case Francais -> selecionarFrances();
+                case Deutsch -> selecionarAlemao();
+            }
+        }
+
+    }
+    void selecionarPortugues(){
+        lblOla.setText("Olá,");
+        lblReceitaMes.setText("Receita do mês:");
+        lblDespesaMes.setText("Despesa do mês:");
+        lblSaldoMes.setText("Saldo do mês:");
+        lblAlterarIdioma.setText("Alterar idioma:");
+        btnLogOut.setText("Log out");
+
+        tabLogin.setText("Login");
+        tabCadastro.setText("Cadastro");
+        tabTelaInicial.setText("Tela Inicial");
+        tabItens.setText("Itens");
+        tabLancamentos.setText("Lançamentos");
+        tabGastos.setText("Transações");
+        tabComparacao.setText("Comparação");
+    }
+    void selecionarIngles(){
+        lblOla.setText("Hello,");
+        lblReceitaMes.setText("Monthly Income:");
+        lblDespesaMes.setText("Monthly Expense:");
+        lblSaldoMes.setText("Monthly Balance:");
+        lblAlterarIdioma.setText("Change language: ");
+        btnLogOut.setText("Log out");
+
+        tabLogin.setText("Login");
+        tabCadastro.setText("User Registration");
+        tabTelaInicial.setText("Home Screen");
+        tabItens.setText("Items");
+        tabLancamentos.setText("Entries");
+        tabGastos.setText("Transactions");
+        tabComparacao.setText("Comparison");
+    }
+    void selecionarEspanhol(){
+        lblOla.setText("Hola,");
+        lblReceitaMes.setText("Ingresos del mes:");
+        lblDespesaMes.setText("Gastos del mes:");
+        lblSaldoMes.setText("Balance del mes:");
+        lblAlterarIdioma.setText("Cambiar idioma: ");
+        btnLogOut.setText("Cerrar sesión");
+
+        tabLogin.setText("Iniciar sesión");
+        tabCadastro.setText("Registro de usuario");
+        tabTelaInicial.setText("Pantalla inicial");
+        tabItens.setText("Ítems");
+        tabLancamentos.setText("Entradas");
+        tabGastos.setText("Transacciones");
+        tabComparacao.setText("Comparación");
+    }
+    void selecionarFrances(){
+        lblOla.setText("Bonjour,");
+        lblReceitaMes.setText("Revenu du mois:");
+        lblDespesaMes.setText("Dépenses du mois:");
+        lblSaldoMes.setText("Solde du mois:");
+        lblAlterarIdioma.setText("Changer de langue:");
+        btnLogOut.setText("Se déconnecter");
+
+        tabLogin.setText("Connexion");
+        tabCadastro.setText("Inscription utilisateur");
+        tabTelaInicial.setText("Écran d'accueil");
+        tabItens.setText("Articles");
+        tabLancamentos.setText("Entrées");
+        tabGastos.setText("Transactions");
+        tabComparacao.setText("Comparaison");
+    }
+
+    void selecionarAlemao(){
+        lblOla.setText("Hallo,");
+        lblReceitaMes.setText("Monatseinkommen:");
+        lblDespesaMes.setText("Monatsausgaben:");
+        lblSaldoMes.setText("Monatssaldo:");
+        lblAlterarIdioma.setText( "Sprache ändern: ");
+        btnLogOut.setText("Abmelden");
+
+        tabLogin.setText("Anmelden");
+        tabCadastro.setText("Benutzerregistrierung");
+        tabTelaInicial.setText("Startbildschirm");
+        tabItens.setText("Artikel");
+        tabLancamentos.setText("Buchungen");
+        tabGastos.setText("Transaktionen");
+        tabComparacao.setText("Vergleich");
+    }
 
 //****************
 // Métodos: outros
